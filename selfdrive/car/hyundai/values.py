@@ -40,6 +40,7 @@ class CAR:
   GRANDEUR20 = "HYUNDAI GRANDEUR 2020 (IG)"
   GRANDEUR20_HEV = "HYUNDAI GRANDEUR HEV 2020 (IG)"
   NEXO = "HYUNDAI NEXO 2019~2020 (FE)"
+  MAXCRUZE = "HYUNDAI MAXCRUZE"
 
   # Kia
   FORTE = "KIA K3 2018 (BD)"
@@ -1201,6 +1202,7 @@ DBC = {
   CAR.GRANDEUR20: dbc_dict('hyundai_kia_generic', None),
   CAR.GRANDEUR20_HEV: dbc_dict('hyundai_kia_generic', None),
   CAR.NEXO: dbc_dict('hyundai_kia_generic', None),
+  CAR.MAXCRUZE: dbc_dict('hyundai_kia_generic', None),
 
   # Kia
   CAR.FORTE: dbc_dict('hyundai_kia_generic', None),
