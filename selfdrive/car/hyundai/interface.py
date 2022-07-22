@@ -74,7 +74,7 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.67
       ret.steerRatio = 16.0
       tire_stiffness_factor = 0.385
-    elif candidate in [CAR.SANTAFE, CAR.SANTAFE_HEV]:
+    elif candidate in [CAR.SANTAFE, CAR.SANTAFE_HEV, CAR.MAXCRUZE]:
       ret.mass = 1910. + STD_CARGO_KG
       ret.wheelbase = 2.76
       ret.steerRatio = 15.8
