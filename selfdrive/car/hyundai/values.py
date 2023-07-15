@@ -41,6 +41,7 @@ class CAR:
   GRANDEUR20_HEV = "HYUNDAI GRANDEUR HEV 2020 (IG)"
   NEXO = "HYUNDAI NEXO 2019~2020 (FE)"
   MAXCRUZE = "HYUNDAI MAXCRUZE"
+  CASPER = "HYUNDAI CASPER"
 
   # Kia
   FORTE = "KIA K3 2018 (BD)"
@@ -203,6 +204,8 @@ FINGERPRINTS = {
   }],
   CAR.GENESIS_G90: [{
     67: 8, 68: 8, 127: 8, 304: 8, 320: 8, 339: 8, 356: 4, 358: 6, 359: 8, 544: 8, 546: 8, 593: 8, 608: 8, 688: 5, 809: 8, 832: 8, 854: 7, 870: 7, 871: 8, 872: 8, 897: 8, 902: 8, 903: 8, 916: 8, 1040: 8, 1056: 8, 1057: 8, 1064: 8, 1078: 4, 1107: 5, 1136: 8, 1151: 6, 1156: 8, 1162: 4, 1168: 7, 1170: 8, 1173: 8, 1184: 8, 1265: 4, 1280: 1, 1281: 3, 1287: 4, 1290: 8, 1292: 8, 1294: 8, 1312: 8, 1322: 8, 1342: 6, 1345: 8, 1348: 8, 1363: 8, 1369: 8, 1370: 8, 1371: 8, 1378: 4, 1384: 8, 1407: 8, 1419: 8, 1425: 2, 1427: 6, 1434: 2, 1456: 4, 1470: 8, 1988: 8, 2000: 8, 2003: 8, 2004: 8, 2005: 8, 2008: 8, 2011: 8, 2012: 8, 2013: 8, 2015: 8
+  }],
+  CAR.CASPER: [{
   }],
 }
 
@@ -1220,6 +1223,7 @@ DBC = {
   CAR.GRANDEUR20_HEV: dbc_dict('hyundai_kia_generic', None),
   CAR.NEXO: dbc_dict('hyundai_kia_generic', None),
   CAR.MAXCRUZE: dbc_dict('hyundai_kia_generic', None),
+  CAR.CAPSER: dbc_dict('hyundai_kia_generic', None),
 
   # Kia
   CAR.FORTE: dbc_dict('hyundai_kia_generic', None),
