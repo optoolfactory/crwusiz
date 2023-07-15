@@ -1223,7 +1223,7 @@ DBC = {
   CAR.GRANDEUR20_HEV: dbc_dict('hyundai_kia_generic', None),
   CAR.NEXO: dbc_dict('hyundai_kia_generic', None),
   CAR.MAXCRUZE: dbc_dict('hyundai_kia_generic', None),
-  CAR.CAPSER: dbc_dict('hyundai_kia_generic', None),
+  CAR.CASPER: dbc_dict('hyundai_kia_generic', None),
 
   # Kia
   CAR.FORTE: dbc_dict('hyundai_kia_generic', None),
