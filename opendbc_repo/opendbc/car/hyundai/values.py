@@ -354,9 +354,31 @@ class CAR(Platforms):
       HyundaiCarDocs("HYUNDAI CASPER (AX1)", "All", car_parts=CarParts.common([CarHarness.hyundai_a]))
     ],
     CarSpecs(mass=1060, wheelbase=2.4, steerRatio=14.3),
+    flags=HyundaiFlags.CAMERA_SCC | HyundaiFlags.CHECKSUM_CRC8,
+  )
+  HYUNDAI_CASPER_EV = HyundaiPlatformConfig(
+    [HyundaiCarDocs("Hyundai Casper EV 2024", "All", car_parts=CarParts.common([CarHarness.hyundai_k]))],
+    CarSpecs(mass=1355, wheelbase=2.58, steerRatio=14.3),  # mass: from https://www.hyundai-motor.com.tw/clicktobuy/custin#spec_0, steerRatio: from learner
+    flags=HyundaiFlags.CAMERA_SCC | HyundaiFlags.CHECKSUM_CRC8 | HyundaiFlags.EV
   )
 
+
   # CanFD Hyundai
+  HYUNDAI_SANTA_FE_2024_MX5 = HyundaiCanFDPlatformConfig(
+    [
+      HyundaiCarDocs("Hyundai Santa Fe (with HDA II) 2024", "Highway Driving Assist II", car_parts=CarParts.common([CarHarness.hyundai_q])),
+    ],
+    CarSpecs(mass=1915, wheelbase=2.815, steerRatio=14.26, tireStiffnessFactor=0.65),
+    flags=HyundaiFlags.ANGLE_CONTROL,
+  )
+  HYUNDAI_SANTA_FE_2024_HEV_MX5 = HyundaiCanFDPlatformConfig(
+    [
+      HyundaiCarDocs("Hyundai Santa Fe Hybrid (with HDA II) 2024", "Highway Driving Assist II", car_parts=CarParts.common([CarHarness.hyundai_q])),
+    ],
+    CarSpecs(mass=1930, wheelbase=2.815, steerRatio=14.26, tireStiffnessFactor=0.65),
+    flags=HyundaiFlags.HYBRID | HyundaiFlags.ANGLE_CONTROL,
+  )
+
   HYUNDAI_SONATA_DN8_24 = HyundaiCanFDPlatformConfig(
     [
       HyundaiCarDocs("HYUNDAI SONATA_2024 (DN8)", car_parts=CarParts.common([CarHarness.hyundai_k])),
