@@ -234,6 +234,16 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   });
   addItem(resetCalibBtn);
 
+  //const char* cal_ok = "sudo cp -f /data/openpilot/selfdrive/assets/CalibrationParams /data/params/d/";
+  auto calokbtn = new ButtonControl("캘리브레이션 강제 활성화", "실행");
+  connect(calokbtn, &ButtonControl::clicked, [&]() {
+      if (ConfirmationDialog::confirm(tr("캘리브레이션을 강제로 설정합니다. 인게이지 확인용이니 실 주행시에는 초기화 하시기 바랍니다"), tr("확인"), this)) {
+        std::system("sudo cp -f /data/openpilot/selfdrive/assets/CalibrationParams /data/params/d/");
+    }
+  }
+  );
+  addItem(calokbtn);
+
   auto retrainingBtn = new ButtonControl(tr("Review Training Guide"), tr("REVIEW"), tr("Review the rules, features, and limitations of openpilot"));
   connect(retrainingBtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm(tr("Are you sure you want to review the training guide?"), tr("Review"), this)) {
