@@ -31,7 +31,6 @@ protected:
 signals:
   void closeSettings();
   void reviewTrainingGuide();
-  void showDriverView();
   void expandToggleDescription(const QString &param);
 
 private:
@@ -49,7 +48,6 @@ public:
 
 signals:
   void reviewTrainingGuide();
-  void showDriverView();
   void closeSettings();
 
 private slots:
