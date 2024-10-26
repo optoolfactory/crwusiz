@@ -108,9 +108,6 @@ function launch {
     popd
   fi
 
-  # git last commit log
-  git log -1 --pretty=format:"%h, %cs, %cr" > ${PARAMS_ROOT}/d/GitLog
-
   # git remote branch list
   git branch -r | sed '1d' | sed -e 's/[/]//g' | sed -e 's/origin//g' | sort -r > ${PARAMS_ROOT}/crwusiz/GitBranchList
 

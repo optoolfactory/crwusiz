@@ -214,7 +214,6 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"SccOnBus2", PERSISTENT},
     {"IsCanfd", PERSISTENT},
     {"IsHda2", PERSISTENT},
-    {"GitLog", PERSISTENT},
     {"DriverCameraHardwareMissing", PERSISTENT},
     {"DriverCameraOnReverse", PERSISTENT},
     {"CarName", CLEAR_ON_MANAGER_START },

@@ -360,6 +360,17 @@
     </message>
 </context>
 <context>
+    <name>DeveloperPanel</name>
+    <message>
+        <source>Joystick Debug Mode</source>
+        <translation>조이스틱 디버그 모드</translation>
+    </message>
+    <message>
+        <source>Longitudinal Maneuver Mode</source>
+        <translation>롱컨 기동 모드</translation>
+    </message>
+</context>
+<context>
     <name>DevicePanel</name>
     <message>
         <source>Dongle ID</source>
@@ -522,6 +533,21 @@
     <message>
         <source>CHILL MODE ON</source>
         <translation>안정 모드 사용</translation>
+    </message>
+</context>
+<context>
+    <name>HudRenderer</name>
+    <message>
+        <source>km/h</source>
+        <translation>km/h</translation>
+    </message>
+    <message>
+        <source>mph</source>
+        <translation>mph</translation>
+    </message>
+    <message>
+        <source>MAX</source>
+        <translation>MAX</translation>
     </message>
 </context>
 <context>
@@ -766,22 +792,6 @@
         </translation>
     </message>
     <message>
-        <source>km</source>
-        <translation type="vanished">km</translation>
-    </message>
-    <message>
-        <source>m</source>
-        <translation type="vanished">m</translation>
-    </message>
-    <message>
-        <source>mi</source>
-        <translation type="vanished">mi</translation>
-    </message>
-    <message>
-        <source>ft</source>
-        <translation type="vanished">ft</translation>
-    </message>
-    <message>
         <source>now</source>
         <translation>now</translation>
     </message>
@@ -885,6 +895,10 @@ This may take up to a minute.</source>
     <message>
         <source>Software</source>
         <translation>소프트웨어</translation>
+    </message>
+    <message>
+        <source>Developer</source>
+        <translation>개발자</translation>
     </message>
     <message>
         <source>Community</source>

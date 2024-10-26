@@ -14,6 +14,7 @@
 #include "selfdrive/ui/qt/qt_window.h"
 #include "selfdrive/ui/qt/widgets/prime.h"
 #include "selfdrive/ui/qt/widgets/scrollview.h"
+#include "selfdrive/ui/qt/offroad/developer_panel.h"
 
 #include <QComboBox>
 #include <QAbstractItemView>
@@ -444,6 +445,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     {tr("Network"), networking},
     {tr("Toggles"), toggles},
     {tr("Software"), new SoftwarePanel(this)},
+    {tr("Developer"), new DeveloperPanel(this)},
     {tr("Community"), new CommunityPanel(this)},
   };
 
