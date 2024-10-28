@@ -93,7 +93,7 @@ class SpeedController:
     apply_limit_speed, road_limit_speed, left_dist, first_started, cam_type, max_speed_log = \
       SpeedLimiter.instance().get_max_speed(clu_speed, self.is_metric)
 
-    self._cal_curve_speed(sm, CS.vEgo, sm.frame)
+    self._cal_curve_speed(sm, CS.vEgoCluster, sm.frame)
     if self.curve_speed_ms >= MIN_CURVE_SPEED:
       max_speed_clu = min(v_cruise_kph * CV.KPH_TO_MS, self.curve_speed_ms) * self.speed_conv_to_clu
     else:
@@ -152,7 +152,7 @@ class SpeedController:
     return 0
 
 
-  def _cal_curve_speed(self, sm, v_ego, frame):
+  def _cal_curve_speed(self, sm, speed, frame):
     if frame % 20 == 0:
       model_msg = sm['modelV2']
       if len(model_msg.position.x) == ModelConstants.IDX_N and len(model_msg.position.y) == ModelConstants.IDX_N:
@@ -162,13 +162,13 @@ class SpeedController:
         d2y = np.gradient(dy, x)
         curv = d2y / (1 + dy ** 2) ** 1.5
 
-        start = int(interp(v_ego, [10., 27.], [10, ModelConstants.IDX_N - 10]))
+        start = int(interp(speed, [10., 27.], [10, ModelConstants.IDX_N - 10]))
         curv = curv[start:min(start + 10, ModelConstants.IDX_N)]
-        a_y_max = 2.975 - v_ego * 0.0375  # ~1.85 @ 75mph, ~2.6 @ 25mph
+        a_y_max = 2.975 - speed * 0.0375  # ~1.85 @ 75mph, ~2.6 @ 25mph
         v_curvature = np.sqrt(a_y_max / np.clip(np.abs(curv), 1e-4, None))
         model_speed = np.mean(v_curvature) * 0.85
 
-        if model_speed < v_ego:
+        if model_speed < speed:
           self.curve_speed_ms = float(max(model_speed, MIN_CURVE_SPEED))
         else:
           self.curve_speed_ms = 255.
@@ -273,7 +273,7 @@ class SpeedController:
 
     if self.wait_timer > 0:
       self.wait_timer -= 1
-    elif ascc_enabled and CS.vEgo > 0.1:
+    elif ascc_enabled and CS.vEgoCluster > 0.1:
       if self.alive_timer == 0:
         current_set_speed_clu = int(round(CS.cruiseState.speed * self.speed_conv_to_clu))
         self.btn = self._get_button(current_set_speed_clu)
