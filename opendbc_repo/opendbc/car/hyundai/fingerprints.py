@@ -756,6 +756,7 @@ FW_VERSIONS = {
       b'\xf1\x00DL ESC \x01 104 \x07\x12 58910-L2200',
       b'\xf1\x00DL ESC \x03 100 \x08\x02 58910-L3600',
       b'\xf1\x00DL ESC \x06 101 \x04\x02 58910-L3200',
+      b'\xf1\x00DL ESC \x06 102 \x07\x02 58910-L3200',
       b'\xf1\x00DL ESC \x06 103"\x08\x06 58910-L3200',
       b'\xf1\x00DL ESC \t 100 \x06\x02 58910-L3800',
       b'\xf1\x00DL ESC \t 101 \x07\x02 58910-L3800',
@@ -1170,6 +1171,7 @@ FW_VERSIONS = {
   # CANFD genesis
   CAR.GENESIS_GV60: {  # (JW1)
     (Ecu.fwdCamera, 0x7c4, None): [
+      b'\xf1\x00JW1 MFC  AT AUS RHD 1.00 1.03 99211-CU100 221118',
       b'\xf1\x00JW1 MFC  AT USA LHD 1.00 1.02 99211-CU000 211215',
       b'\xf1\x00JW1 MFC  AT USA LHD 1.00 1.02 99211-CU100 211215',
       b'\xf1\x00JW1 MFC  AT USA LHD 1.00 1.03 99211-CU000 221118',
