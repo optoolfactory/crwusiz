@@ -665,6 +665,18 @@ FW_VERSIONS = {
       b'\xf1\x00AX1 MFC  AT KOR LHD 1.00 1.03 99211-O6000 211007',
     ],
   },
+  CAR.HYUNDAI_SANTAFE_MX5: {  # (MX5)
+    (Ecu.fwdRadar, 0x7d0, None): [
+    ],
+    (Ecu.fwdCamera, 0x7c4, None): [
+    ],
+  },
+  CAR.HYUNDAI_SANTAFE_MX5_HEV: {  # (MX5)
+    (Ecu.fwdRadar, 0x7d0, None): [
+    ],
+    (Ecu.fwdCamera, 0x7c4, None): [
+    ],
+  },
 
   # kia
   CAR.KIA_K3: { # (BD)
@@ -1084,6 +1096,12 @@ FW_VERSIONS = {
     ],
     (Ecu.fwdRadar, 0x7d0, None): [
       b'\xf1\x00DL3_ RDR -----      1.00 1.01 99110-L2500         ',
+    ],
+  },
+  CAR.KIA_EV3: {  # (SV1)
+    (Ecu.fwdRadar, 0x7d0, None): [
+    ],
+    (Ecu.fwdCamera, 0x7c4, None): [
     ],
   },
 
