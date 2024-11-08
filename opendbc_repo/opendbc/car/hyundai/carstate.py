@@ -69,7 +69,7 @@ class CarState(CarStateBase):
     ret = structs.CarState()
     cp_cruise = cp_cam if self.CP.flags & HyundaiFlags.CAMERA_SCC or self.CP.sccBus == 2 else cp
     self.is_metric = cp.vl["CLU11"]["CF_Clu_SPEED_UNIT"] == 0
-    speed_conv = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
+    speed_factor = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
 
     ret.doorOpen = any([cp.vl["CGW1"]["CF_Gway_DrvDrSw"], cp.vl["CGW1"]["CF_Gway_AstDrSw"],
                         cp.vl["CGW2"]["CF_Gway_RLDrSw"], cp.vl["CGW2"]["CF_Gway_RRDrSw"]])
@@ -95,8 +95,10 @@ class CarState(CarStateBase):
       if not self.is_metric:
         self.cluster_speed = math.floor(self.cluster_speed * CV.KPH_TO_MPH + CV.KPH_TO_MPH)
 
-    #ret.vEgoCluster = self.cluster_speed * speed_conv
-    ret.vEgoCluster = ret.vEgo * 1.037
+    #ret.vEgoCluster = self.cluster_speed * speed_factor
+    #ret.vEgoCluster = ret.vEgo * 1.037
+    cluSpeed = cp.vl["CLU11"]["CF_Clu_Vanz"]
+    ret.vEgoCluster = cluSpeed * speed_factor
 
     ret.steeringAngleDeg = cp.vl["SAS11"]["SAS_Angle"]
     ret.steeringRateDeg = cp.vl["SAS11"]["SAS_Speed"]
@@ -122,7 +124,7 @@ class CarState(CarStateBase):
       ret.cruiseState.enabled = cp_cruise.vl["SCC12"]["ACCMode"] != 0
       ret.cruiseState.standstill = cp_cruise.vl["SCC11"]["SCCInfoDisplay"] == 4.
       ret.cruiseState.nonAdaptive = cp_cruise.vl["SCC11"]["SCCInfoDisplay"] == 2.  # Shows 'Cruise Control' on dash
-      ret.cruiseState.speed = cp_cruise.vl["SCC11"]["VSetDis"] * speed_conv if ret.cruiseState.enabled else 0
+      ret.cruiseState.speed = cp_cruise.vl["SCC11"]["VSetDis"] * speed_factor if ret.cruiseState.enabled else 0
 
     # TODO: Find brake pressure
     ret.brake = 0
@@ -250,7 +252,9 @@ class CarState(CarStateBase):
     )
     ret.vEgoRaw = (ret.wheelSpeeds.fl + ret.wheelSpeeds.fr + ret.wheelSpeeds.rl + ret.wheelSpeeds.rr) / 4.
     ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)
-    ret.vEgoCluster = ret.vEgo * 1.037
+    #ret.vEgoCluster = ret.vEgo * 1.037
+    cluSpeed = cp.vl["CRUISE_BUTTONS_ALT"]["CLU_SPEED"]
+    ret.vEgoCluster = cluSpeed * speed_factor
 
     ret.standstill = ret.wheelSpeeds.fl <= STANDSTILL_THRESHOLD and ret.wheelSpeeds.rr <= STANDSTILL_THRESHOLD
 
@@ -263,7 +267,7 @@ class CarState(CarStateBase):
 
     # TODO: alt signal usage may be described by cp.vl['BLINKERS']['USE_ALT_LAMP']
     left_blinker_sig, right_blinker_sig = "LEFT_LAMP", "RIGHT_LAMP"
-    if self.CP.carFingerprint in (CAR.HYUNDAI_KONA_SX2_EV) or self.CP.flags & HyundaiFlags.ANGLE_CONTROL:
+    if self.CP.carFingerprint in CAR.HYUNDAI_KONA_SX2_EV or self.CP.flags & HyundaiFlags.ANGLE_CONTROL:
       left_blinker_sig, right_blinker_sig = "LEFT_LAMP_ALT", "RIGHT_LAMP_ALT"
     ret.leftBlinker, ret.rightBlinker = self.update_blinker_from_lamp(50, cp.vl["BLINKERS"][left_blinker_sig],
                                                                       cp.vl["BLINKERS"][right_blinker_sig])

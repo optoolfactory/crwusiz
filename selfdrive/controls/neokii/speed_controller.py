@@ -9,8 +9,7 @@ from openpilot.selfdrive.car.cruise import (VCruiseHelper, V_CRUISE_MIN, V_CRUIS
 from openpilot.selfdrive.controls.neokii.navi_controller import SpeedLimiter
 from openpilot.selfdrive.modeld.constants import ModelConstants
 
-SYNC_MARGIN = 3.
-MIN_CURVE_SPEED = 32. * CV.KPH_TO_MS
+MIN_CURVE_SPEED = 40. * CV.KPH_TO_MS
 
 class SpeedController:
   def __init__(self, CP, CI):
@@ -18,7 +17,6 @@ class SpeedController:
     self.CI = CI
 
     self.long_control = CP.openpilotLongitudinalControl
-    self.pcmcruise = CP.pcmCruise
 
     self.is_metric = Params().get_bool('IsMetric')
     self.experimental_mode = Params().get_bool("ExperimentalMode") and self.long_control
@@ -124,7 +122,6 @@ class SpeedController:
       self.limited_lead = False
 
     self._update_max_speed(int(round(max_speed_clu)))
-
     return max_speed_clu
 
 
@@ -179,28 +176,6 @@ class SpeedController:
         self.curve_speed_ms = 255.
 
 
-  def _cal_target_speed(self, CS, clu_speed, v_cruise_kph, cruise_btn_pressed):
-    override_speed = -1
-    if not self.long_control:
-      if CS.gasPressed and not cruise_btn_pressed:
-        if clu_speed + SYNC_MARGIN > self._kph_to_clu(v_cruise_kph):
-          set_speed = clip(clu_speed + SYNC_MARGIN, self.min_set_speed_clu, self.max_set_speed_clu)
-          v_cruise_kph = int(round(set_speed * self.speed_conv_to_ms * CV.MS_TO_KPH))
-          override_speed = v_cruise_kph
-
-      self.target_speed = self._kph_to_clu(v_cruise_kph)
-      if self.max_speed_clu > self.min_set_speed_clu:
-        self.target_speed = clip(self.target_speed, self.min_set_speed_clu, self.max_speed_clu)
-
-    elif CS.cruiseState.enabled:
-      if CS.gasPressed and not cruise_btn_pressed:
-        if clu_speed + SYNC_MARGIN > self._kph_to_clu(v_cruise_kph):
-          set_speed = clip(clu_speed + SYNC_MARGIN, self.min_set_speed_clu, self.max_set_speed_clu)
-          self.target_speed = set_speed
-
-    return override_speed
-
-
   def _update_max_speed(self, max_speed):
     if not self.long_control or self.max_speed_clu <= 0:
       self.max_speed_clu = max_speed
@@ -223,10 +198,8 @@ class SpeedController:
     self.v_cruise_kph_last = self.v_cruise_kph
     v_cruise_kph = self.v_cruise_kph
 
-    manage_button = not self.CP.openpilotLongitudinalControl or not self.CP.pcmCruise
-
     if CS.cruiseState.enabled:
-      if manage_button:
+      if not self.CP.openpilotLongitudinalControl or not self.CP.pcmCruise:
         v_cruise_kph = self.v_cruise_helper.update_v_cruise(CS, enabled, self.is_metric)
       else:
         v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
@@ -248,10 +221,6 @@ class SpeedController:
 
       self._cal_max_speed(CS, sm, clu_speed, v_cruise_kph)
       self.cruise_speed_kph = float(clip(v_cruise_kph, V_CRUISE_MIN, self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
-
-      override_speed = self._cal_target_speed(CS, clu_speed, self.real_set_speed_kph, self.CI.CS.cruise_buttons[-1] != Buttons.NONE)
-      if override_speed > 0:
-        v_cruise_kph = override_speed
     else:
       self.reset()
 
