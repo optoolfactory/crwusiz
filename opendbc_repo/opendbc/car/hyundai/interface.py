@@ -146,8 +146,8 @@ class CarInterface(CarInterfaceBase):
     # Common lateral control setup
 
     ret.centerToFront = ret.wheelbase * 0.4
-    ret.steerActuatorDelay = 0.1
-    ret.steerLimitTimer = 0.4
+    ret.steerActuatorDelay = 0.2 # 0.1
+    ret.steerLimitTimer = 2.0 # 0.4
 
     if ret.flags & HyundaiFlags.ANGLE_CONTROL:
       ret.steerControlType = SteerControlType.angle
