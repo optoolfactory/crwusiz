@@ -442,20 +442,7 @@ class CAR(Platforms):
     ],
     CarSpecs(mass=2205, wheelbase=3.273, steerRatio=11.94),
   )
-  HYUNDAI_SANTAFE_MX5 = HyundaiPlatformConfig(
-    [
-      HyundaiCarDocs("HYUNDAI SANTAFE (MX5)", car_parts=CarParts.common([CarHarness.hyundai_k])),
-    ],
-    CarSpecs(mass=1910, wheelbase=2.76, steerRatio=15.8, tireStiffnessFactor=0.82),
-    flags=HyundaiFlags.ANGLE_CONTROL,
-  )
-  HYUNDAI_SANTAFE_MX5_HEV = HyundaiPlatformConfig(
-    [
-      HyundaiCarDocs("HYUNDAI SANTAFE HYBRID (MX5)", car_parts=CarParts.common([CarHarness.hyundai_k])),
-    ],
-    HYUNDAI_SANTAFE_MX5.specs,
-    flags=HyundaiFlags.ANGLE_CONTROL,
-  )
+
 
   # Kia
   KIA_K3 = HyundaiPlatformConfig(
