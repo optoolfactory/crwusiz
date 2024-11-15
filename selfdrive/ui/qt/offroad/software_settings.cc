@@ -54,7 +54,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   connect(targetBranchBtn, &ButtonControl::clicked, [=]() {
     auto current = params.get("GitBranch");
     QStringList branches = QString::fromStdString(params.get("UpdaterAvailableBranches")).split(",");
-    for (QString b : {current.c_str(), "devel-staging", "devel", "nightly", "master-ci", "master"}) {
+    for (QString b : {current.c_str(), "devel-staging", "devel", "nightly", "nightly-dev", "master-ci", "master"}) {
       auto i = branches.indexOf(b);
       if (i >= 0) {
         branches.removeAt(i);
@@ -86,10 +86,6 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   // add software info
   gitRemoteLbl = new LabelControl("Git Remote", "");
   addItem(gitRemoteLbl);
-  gitBranchLbl = new LabelControl("Git Branch", "");
-  addItem(gitBranchLbl);
-  gitCommitLbl = new LabelControl("Git Commit", "");
-  addItem(gitCommitLbl);
 
   fs_watch = new ParamWatcher(this);
   QObject::connect(fs_watch, &ParamWatcher::paramChanged, [=](const QString &param_name, const QString &param_value) {
@@ -162,9 +158,7 @@ void SoftwarePanel::updateLabels() {
   installBtn->setValue(QString::fromStdString(params.get("UpdaterNewDescription")));
   installBtn->setDescription(QString::fromStdString(params.get("UpdaterNewReleaseNotes")));
 
-  // gitRemoteLbl->setText(QString::fromStdString(params.get("GitRemote")));
-  gitBranchLbl->setText(QString::fromStdString(params.get("GitBranch")));
-  gitCommitLbl->setText(QString::fromStdString(params.get("GitLog")));
+  gitRemoteLbl->setText(QString::fromStdString(params.get("GitRemote")));
 
   update();
 }
