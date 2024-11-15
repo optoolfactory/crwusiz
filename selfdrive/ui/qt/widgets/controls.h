@@ -265,7 +265,7 @@ class ListWidget : public QWidget {
     outer_layout.addLayout(&inner_layout);
     inner_layout.setMargin(0);
     inner_layout.setSpacing(10); // default spacing is 25
-    outer_layout.addStretch();
+    outer_layout.addStretch(1);
   }
   inline void addItem(QWidget *w) { inner_layout.addWidget(w); }
   inline void addItem(QLayout *layout) { inner_layout.addLayout(layout); }

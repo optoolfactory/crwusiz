@@ -50,10 +50,9 @@ def manager_init() -> None:
     ("IsLdwEnabled", "1"),
     ("AutoLaneChangeEnabled", "1"),
     ("PrebuiltEnable", "0"),
-    ("LoggerEnable", "0"),
+    ("LoggerEnable", "1"),
     ("RadarTrackEnable", "0"),
     ("SccOnBus2", "0"),
-    ("DisengageOnBrake", "0"),
   ]
 
   if params.get_bool("RecordFrontLock"):

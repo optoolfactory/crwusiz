@@ -45,10 +45,10 @@ function launch {
   #    that completed successfully and synced to disk.
 
   if [ -f "${BASEDIR}/.overlay_init" ]; then
-    #find ${BASEDIR}/.git -newer ${BASEDIR}/.overlay_init | grep -q '.' 2> /dev/null
-    #if [ $? -eq 0 ]; then
-    #  echo "${BASEDIR} has been modified, skipping overlay update installation"
-    #else
+    find ${BASEDIR}/.git -newer ${BASEDIR}/.overlay_init | grep -q '.' 2> /dev/null
+    if [ $? -eq 0 ]; then
+      echo "${BASEDIR} has been modified, skipping overlay update installation"
+    else
       if [ -f "${STAGING_ROOT}/finalized/.overlay_consistent" ]; then
         if [ ! -d /data/safe_staging/old_openpilot ]; then
           echo "Valid overlay update found, installing"
@@ -66,7 +66,7 @@ function launch {
           # TODO: restore backup? This means the updater didn't start after swapping
         fi
       fi
-  #  fi
+    fi
   fi
 
   # handle pythonpath
@@ -108,9 +108,6 @@ function launch {
     popd
   fi
 
-  # git last commit log
-  git log -1 --pretty=format:"%h, %cs, %cr" > ${PARAMS_ROOT}/d/GitLog
-
   # git remote branch list
   git branch -r | sed '1d' | sed -e 's/[/]//g' | sed -e 's/origin//g' | sort -r > ${PARAMS_ROOT}/crwusiz/GitBranchList
 
@@ -124,23 +121,6 @@ function launch {
     cp -f $BASEDIR/scripts/add/events_ko.py $BASEDIR/selfdrive/selfdrived/events.py
   elif [ "${LANG}" = "main_en" ] && [[ "${EVENTSTAT}" == *"modified:   selfdrive/controls/lib/events.py"* ]]; then
     cp -f $BASEDIR/scripts/add/events_en.py $BASEDIR/selfdrive/selfdrived/events.py
-  fi
-
-  # 시간동기화
-  if ping -c 3 8.8.8.8 > /dev/null 2>&1; then
-    if [ "${LANG}" = "main_ko" ]; then
-      sudo mount -o remount,rw /
-      sudo timedatectl set-timezone Asia/Seoul
-      sudo timedatectl set-ntp true
-      sudo mount -o remount,ro /
-    elif [ "${LANG}" = "main_en" ]; then
-      sudo mount -o remount,rw /
-      sudo timedatectl set-timezone America/New_York
-      sudo timedatectl set-ntp true
-      sudo mount -o remount,ro /
-    fi
-  else
-    echo "Network is not connected. Timezone and NTP settings were not changed."
   fi
 
   # start manager

@@ -1,4 +1,3 @@
-import copy
 from opendbc.can.packer import CANPacker
 from opendbc.car import (DT_CTRL, apply_driver_steer_torque_limits, common_fault_avoidance, make_tester_present_msg, structs,
                                      apply_std_steer_angle_limits)
@@ -7,7 +6,7 @@ from opendbc.car.common.numpy_fast import clip, interp
 from opendbc.car.hyundai import hyundaicanfd, hyundaican
 from opendbc.car.hyundai.carstate import CarState
 from opendbc.car.hyundai.hyundaicanfd import CanBus
-from opendbc.car.hyundai.values import HyundaiFlags, Buttons, CarControllerParams, CANFD_CAR, CAR, CAN_GEARS
+from opendbc.car.hyundai.values import HyundaiFlags, Buttons, CarControllerParams, CAR, CAN_GEARS
 from opendbc.car.interfaces import CarControllerBase, ACCEL_MIN, ACCEL_MAX
 
 from openpilot.selfdrive.controls.neokii.navi_controller import SpeedLimiter
@@ -62,7 +61,7 @@ class CarController(CarControllerBase):
     self.apply_angle_last = 0
     self.lkas_max_torque = 0
 
-    self.turning_signal_timer = 0
+    self.turningSignalTimer = 0
 
     self.driver_steering_angle_above_timer = 150
 
@@ -108,9 +107,9 @@ class CarController(CarControllerBase):
 
     # Disable steering while turning blinker on and speed below 60 kph
     if CS.out.leftBlinker or CS.out.rightBlinker:
-      self.turning_signal_timer = 0.5 / DT_CTRL  # Disable for 0.5 Seconds after blinker turned off
-    if self.turning_signal_timer > 0:
-      self.turning_signal_timer -= 1
+      self.turningSignalTimer = 0.5 / DT_CTRL  # Disable for 0.5 Seconds after blinker turned off
+    if self.turningSignalTimer > 0:
+      self.turningSignalTimer -= 1
 
     if not CC.latActive:
       apply_angle = CS.out.steeringAngleDeg
@@ -137,7 +136,7 @@ class CarController(CarControllerBase):
     # *** common hyundai stuff ***
 
     # CAN-FD platforms
-    if self.CP.carFingerprint in CANFD_CAR:
+    if self.CP.flags & HyundaiFlags.CANFD:
       hda2 = self.CP.flags & HyundaiFlags.CANFD_HDA2
       #hda2_long = hda2 and self.CP.openpilotLongitudinalControl
 
@@ -221,7 +220,7 @@ class CarController(CarControllerBase):
       if self.frame % 1000 == 0:
         print(f'scc11 = {bool(CS.scc11)}  scc12 = {bool(CS.scc12)}  scc13 = {bool(CS.scc13)}  scc14 = {bool(CS.scc14)}  mdps12 = {bool(CS.mdps12)}')
 
-    new_actuators = copy.copy(actuators)
+    new_actuators = actuators.as_builder()
     new_actuators.steer = apply_steer / self.params.STEER_MAX
     new_actuators.steerOutputCan = apply_steer
     new_actuators.steeringAngleDeg = apply_angle

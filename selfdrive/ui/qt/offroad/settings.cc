@@ -8,12 +8,13 @@
 
 #include "common/watchdog.h"
 #include "common/util.h"
+#include "selfdrive/ui/qt/offroad/driverview.h"
 #include "selfdrive/ui/qt/network/networking.h"
 #include "selfdrive/ui/qt/offroad/settings.h"
 #include "selfdrive/ui/qt/qt_window.h"
 #include "selfdrive/ui/qt/widgets/prime.h"
 #include "selfdrive/ui/qt/widgets/scrollview.h"
-#include "selfdrive/ui/qt/widgets/ssh_keys.h"
+#include "selfdrive/ui/qt/offroad/developer_panel.h"
 
 #include <QComboBox>
 #include <QAbstractItemView>
@@ -217,7 +218,12 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
 
   auto dcamBtn = new ButtonControl(tr("Driver Camera"), tr("PREVIEW"),
                                    tr("Preview the driver facing camera to ensure that driver monitoring has good visibility. (vehicle must be off)"));
-  connect(dcamBtn, &ButtonControl::clicked, [=]() { emit showDriverView(); });
+  connect(dcamBtn, &ButtonControl::clicked, [this, dcamBtn]() {
+    dcamBtn->setEnabled(false);
+    DriverViewDialog driver_view(this);
+    driver_view.exec();
+    dcamBtn->setEnabled(true);
+  });
   addItem(dcamBtn);
 
   auto resetCalibBtn = new ButtonControl(tr("Reset Calibration"), tr("RESET"), "");
@@ -436,7 +442,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   // setup panels
   DevicePanel *device = new DevicePanel(this);
   QObject::connect(device, &DevicePanel::reviewTrainingGuide, this, &SettingsWindow::reviewTrainingGuide);
-  QObject::connect(device, &DevicePanel::showDriverView, this, &SettingsWindow::showDriverView);
   QObject::connect(device, &DevicePanel::closeSettings, this, &SettingsWindow::closeSettings);
 
   TogglesPanel *toggles = new TogglesPanel(this);
@@ -450,6 +455,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     {tr("Network"), networking},
     {tr("Toggles"), toggles},
     {tr("Software"), new SoftwarePanel(this)},
+    {tr("Developer"), new DeveloperPanel(this)},
     {tr("Community"), new CommunityPanel(this)},
   };
 
@@ -824,11 +830,6 @@ CommunityPanel::CommunityPanel(QWidget* parent) : QWidget(parent) {
                                   tr("Enable Radar Track use"),
                                   tr("Enable Radar Track use (disable AEB)"),
                                   "../assets/offroad/icon_warning.png",
-                                  this));
-  toggles.append(new ParamControl("DisengageOnBrake",
-                                  tr("Disengage on Brake Pedal"),
-                                  tr("When enabled, pressing the brake pedal will disengage openpilot."),
-                                  "../assets/offroad/icon_disengage_on_accelerator.svg",
                                   this));
   for (ParamControl *toggle : toggles) {
     if (main_layout->count() != 0) {
